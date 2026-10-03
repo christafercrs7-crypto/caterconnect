@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaterConnect | Sign In</title>
+    
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="login-style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="brand.css">
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between p-4 pb-24">
+
+    <div class="login-card bg-white w-full max-w-md mx-auto my-auto p-8 sm:p-10 rounded-[2rem] shadow-xl border border-gray-100 relative overflow-hidden">
+        
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
+
+        <a href="index.html" class="brand-lockup auth-brand">
+            <span class="brand-mark"><i class="fa-solid fa-bell-concierge"></i></span>
+            <span class="brand-name">CaterConnect</span>
+        </a>
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-2 mt-2">Welcome back</h2>
+        <p class="text-sm text-gray-500 mb-8 font-medium">Sign in to continue to your account</p>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-5">
+            <div class="input-group">
+                <input type="email" id="email" class="custom-input w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Email Address" required>
+            </div>
+
+            <div class="input-group relative">
+                <input type="password" id="password" class="custom-input w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 pr-12" placeholder="Password" required>
+                <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500">
+                    <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
+
+            <p id="errorMessage" class="text-red-500 text-sm font-medium hidden text-center"></p>
+
+            <button type="submit" id="submitBtn" class="w-full mt-6 py-3.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-orange-500/50 transition-all">
+                Sign In
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-600 font-medium mt-8">
+            New here? <a href="register.html" class="text-orange-500 font-bold hover:underline">Create account</a>
+        </p>
+    </div>
+
+    <!-- PERMANENT NAVBAR MOUNT -->
+    <div id="nav-placeholder"></div>
+
+    <script src="login-script.js"></script>
+    <script src="navbar.js"></script>
+</body>
+</html>

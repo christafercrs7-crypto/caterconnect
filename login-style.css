@@ -1,0 +1,60 @@
+/* --- Login Card Specific Styling --- */
+.login-card {
+    /* Soft glowing shadow for a premium feel */
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 20px 0 rgba(249, 115, 22, 0.05);
+}
+
+/* --- Input Fields Styling --- */
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background-color: #f9fafb; /* Light gray to match theme */
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    font-size: 0.95rem;
+    color: #1f2937;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.custom-input::placeholder {
+    color: #9ca3af;
+}
+
+.custom-input:focus {
+    background-color: #ffffff;
+    border-color: #f97316; /* Orange brand color */
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+/* --- Social Buttons Styling --- */
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.social-btn:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.social-btn:active {
+    transform: scale(0.98);
+}

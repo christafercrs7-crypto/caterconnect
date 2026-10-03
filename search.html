@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Caterer | CaterConnect</title>
+    
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="brand.css">
+
+    <!-- Supabase SDK & Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen pb-24">
+
+    <!-- TOP HEADER WITH APP LOGO AND NAME -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm px-4 py-3 flex items-center justify-between">
+        <a href="index.html" class="p-2 text-slate-500 hover:text-orange-500 transition-colors rounded-full" aria-label="Go Back">
+            <i class="fa-solid fa-arrow-left text-lg"></i>
+        </a>
+
+        <!-- Brand Logo & Name -->
+        <div class="brand-lockup">
+            <span class="brand-mark"><i class="fa-solid fa-bell-concierge"></i></span>
+            <span class="brand-name">CaterConnect</span>
+        </div>
+
+        <div class="w-8"></div> <!-- Spacer for symmetric alignment -->
+    </header>
+
+    <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+        
+        <!-- PAGE TITLE -->
+        <div class="text-center pt-2">
+            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Find Your Caterer</h1>
+            <p class="text-xs text-slate-400 mt-1 font-medium">Discover top-rated catering services near you</p>
+        </div>
+
+        <!-- SEARCH BAR CONTAINER -->
+        <div class="relative">
+            <div class="relative flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-orange-500 text-sm"></i>
+                <input 
+                    type="text" 
+                    id="searchBarInput" 
+                    class="w-full pl-11 pr-10 py-3.5 bg-white border border-slate-200 rounded-2xl text-sm font-medium focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm" 
+                    placeholder="Search caterer name, cuisine, or location..."
+                    autocomplete="off"
+                >
+                <button type="button" id="clearSearchBtn" class="hidden absolute right-3 p-1.5 text-slate-400 hover:text-slate-600 rounded-full">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CATEGORY QUICK FILTERS -->
+        <div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none category-scroll-container">
+            <button type="button" class="category-chip active" onclick="filterByCategory(this, '')">All</button>
+            <button type="button" class="category-chip" onclick="filterByCategory(this, 'wedding')">Wedding</button>
+            <button type="button" class="category-chip" onclick="filterByCategory(this, 'corporate')">Corporate</button>
+            <button type="button" class="category-chip" onclick="filterByCategory(this, 'parties')">Parties</button>
+            <button type="button" class="category-chip" onclick="filterByCategory(this, 'special_events')">Special Events</button>
+        </div>
+
+        <!-- SEARCH STATES -->
+
+        <!-- 1. INITIAL SWITCH STATE (Dimmed Logo + Quote) -->
+        <div id="initialSearchState" class="flex flex-col items-center justify-center py-20 space-y-4">
+            <div class="w-28 h-28 rounded-full bg-slate-100/80 flex items-center justify-center text-slate-300 opacity-40 shadow-inner">
+                <i class="fa-solid fa-bell text-5xl"></i>
+            </div>
+            <div class="text-center space-y-1">
+                <p class="text-lg font-bold text-slate-400 tracking-wide">Find Your Match</p>
+                <p class="text-xs text-slate-400">Type keywords above to discover catering services</p>
+            </div>
+        </div>
+
+        <!-- 2. LOADING STATE -->
+        <div id="searchLoadingState" class="hidden py-16 text-center space-y-3">
+            <div class="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p class="text-xs text-slate-400 font-medium">Searching caterers...</p>
+        </div>
+
+        <!-- 3. INVALID / NO RESULTS STATE (Dimmed Logo + Invalid Message) -->
+        <div id="invalidSearchState" class="hidden flex flex-col items-center justify-center py-16 space-y-4">
+            <div class="w-24 h-24 rounded-full bg-red-50 flex items-center justify-center text-red-300 opacity-50 shadow-inner">
+                <i class="fa-solid fa-bell-slash text-4xl"></i>
+            </div>
+            <div class="text-center px-4 space-y-1">
+                <p id="invalidMessageText" class="text-sm font-semibold text-red-500">Invalid search query or no caterer found.</p>
+                <p class="text-xs text-slate-400">Please check your spelling or search with different keywords.</p>
+            </div>
+        </div>
+
+        <!-- 4. MATCHING RESULTS LIST -->
+        <div id="searchResultsGrid" class="hidden space-y-4"></div>
+
+    </main>
+
+    <!-- MENU MODAL -->
+    <div id="menuModal" class="modal-backdrop hide">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modalCatererName" class="font-bold text-slate-800 text-lg">Caterer Name</h3>
+                    <p id="modalCatererMeta" class="text-xs text-slate-400 mt-0.5">Location &bull; Rating</p>
+                </div>
+                <button type="button" id="closeModalBtn" class="modal-close-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modalMenuContent" class="modal-body space-y-3"></div>
+            <div class="modal-footer flex items-center justify-between">
+                <div>
+                    <label class="text-xs font-semibold text-slate-500 block">Guests</label>
+                    <input type="number" id="guestCountInput" class="guest-input mt-1" value="30" min="10">
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-400 block">Est. Total</span>
+                    <span id="estimatedTotalPrice" class="font-extrabold text-orange-500 text-lg">$0</span>
+                </div>
+            </div>
+            <div class="p-3 border-t border-slate-100">
+                <a id="whatsappBookingBtn" href="#" target="_blank" class="whatsapp-btn">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Inquire via WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERMANENT NAVBAR MOUNT -->
+    <div id="nav-placeholder"></div>
+
+    <script src="navbar.js"></script>
+    <script src="search.js"></script>
+</body>
+</html>

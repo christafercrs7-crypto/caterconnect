@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaterConnect Admin Panel</title>
+    
+    <!-- External Icon Fonts & Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <!-- Custom Admin Styles -->
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="brand.css">
+</head>
+<body class="bg-gray-100 text-gray-800 pb-24">
+
+    <!-- ADMIN PANEL WRAPPER -->
+    <div class="admin-wrapper flex min-h-screen">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <nav class="sidebar w-64 bg-slate-900 text-white p-6 flex flex-col justify-between">
+            <div>
+                <div class="sidebar-header mb-8">
+                    <a href="index.html" class="brand-lockup">
+                        <span class="brand-mark"><i class="fa-solid fa-bell-concierge"></i></span>
+                        <span class="brand-name">CaterConnect</span>
+                    </a>
+                </div>
+                <ul class="nav-links space-y-2">
+                    <li class="active"><a href="#dashboard" id="nav-dashboard" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+                    <li><a href="#caterers" id="nav-caterers" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800"><i class="fa-solid fa-utensils"></i>Caterers</a></li>
+                    <li><a href="#users" id="nav-users" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800"><i class="fa-solid fa-users"></i>Users</a></li>
+                    <li><a href="#bookings" id="nav-bookings" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800"><i class="fa-solid fa-calendar-check"></i>Bookings</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content flex-1 p-8">
+            <header class="top-bar flex justify-between items-center mb-8">
+                <h1 class="text-2xl font-bold">Admin Panel</h1>
+            </header>
+
+            <div id="content-loader" class="content-container">
+                <p class="text-gray-500">Select an admin module from the left menu to manage platform records.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- PERMANENT NAVBAR MOUNT -->
+    <div id="nav-placeholder"></div>
+
+    <!-- Scripts -->
+
+    <script src="admin.js"></script>
+    <script src="navbar.js"></script>
+</body>
+</html>

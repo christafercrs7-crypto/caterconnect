@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Profile | CaterConnect</title>
+    
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="brand.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen pb-24 relative">
+
+   <!-- CENTERED DIMINISHED WATERMARK LOGO -->
+    <div class="profile-watermark">
+        <div class="flex flex-col items-center justify-center text-orange-500">
+            <i class="fa-solid fa-bell-concierge text-[13rem] sm:text-[17rem] leading-none"></i>
+            <span class="text-3xl sm:text-5xl font-black tracking-tight mt-1">CaterConnect</span>
+        </div>
+    </div>
+
+   <main class="max-w-md mx-auto px-4 pt-6 space-y-4 profile-content-container"></main>
+
+       <!-- CATERCONNECT HEADER -->
+        <header class="text-center pt-2 pb-1">
+            <div class="brand-lockup">
+                <span class="brand-mark"><i class="fa-solid fa-bell-concierge"></i></span>
+                <h1 class="brand-name">CaterConnect</h1>
+            </div>
+        </header>
+
+        <!-- GUEST STATE -->
+        <div id="guestContent" class="hidden bg-white p-8 rounded-3xl border border-slate-100 shadow-sm text-center space-y-5 my-8">
+            <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">You are not signed in</h2>
+                <p class="text-xs text-slate-400 mt-1">Sign in or create an account to access your profile settings.</p>
+            </div>
+            <div class="space-y-2 pt-2">
+                <a href="login.html" class="block w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl shadow-md text-sm">
+                    Sign In
+                </a>
+                <a href="register.html" class="block w-full py-3 bg-slate-100 text-slate-700 font-bold rounded-2xl text-sm">
+                    Create Account
+                </a>
+            </div>
+        </div>
+
+        <!-- AUTHENTICATED STATE -->
+        <div id="profileContent" class="hidden space-y-4">
+            <p id="profileStatusMessage" class="hidden text-sm text-red-600" role="alert"></p>
+
+            <!-- User Header Card -->
+            <div id="btnProfileHeader" class="profile-card flex items-center justify-between p-4 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div class="avatar-wrapper">
+                        <img id="headerUserAvatar" src="" alt="User Avatar" class="avatar-img hidden">
+                        <div id="headerAvatarFallback" class="w-14 h-14 rounded-full bg-orange-500 text-white flex items-center justify-center text-2xl font-bold shadow-inner">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span id="userName" class="font-bold text-slate-800 text-base">Loading...</span>
+                        <span id="userSubtext" class="text-xs text-slate-400 mt-0.5">User Account</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Menu Options -->
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm divide-y divide-slate-100 overflow-hidden">
+                
+                <!-- 1. Personal Information Button -->
+                <button type="button" id="btnPersonalInfo" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center">
+                            <i class="fa-regular fa-user text-lg"></i>
+                        </div>
+                        <span class="font-semibold text-slate-700 text-sm">Personal Information</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+
+                <!-- 2. Notifications Button -->
+                <button type="button" id="btnNotifications" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                        </div>
+                        <span class="font-semibold text-slate-700 text-sm">Notifications</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+
+                <!-- 3. Add Your Service Button -->
+                <button type="button" id="btnAddService" class="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center">
+                            <i class="fa-solid fa-plus text-lg"></i>
+                        </div>
+                        <span class="font-semibold text-slate-700 text-sm">Add Your Service</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+
+            </div>
+
+            <!-- Admin Link -->
+            <a href="admin.html" id="admin-panel-link" class="hidden flex items-center justify-between p-4 bg-red-50 text-red-600 font-semibold rounded-3xl border border-red-100 hover:bg-red-100 transition">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Admin Panel</span>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </a>
+
+            <!-- Sign Out Button -->
+            <button type="button" id="btnSignOut" class="w-full py-4 bg-red-50 hover:bg-red-100 text-red-500 font-semibold rounded-3xl flex items-center justify-center gap-2 transition-colors shadow-sm">
+                <i class="fa-solid fa-arrow-right-from-bracket text-base"></i>
+                <span>Sign Out</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- PERSONAL INFORMATION MODAL -->
+    <div id="personalInfoModal" class="profile-modal-overlay">
+        <div class="profile-modal-container space-y-6">
+            
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-bold text-slate-800">Personal Information</h3>
+                <button type="button" id="btnClosePersonalInfo" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Profile Photo Management -->
+            <div class="flex flex-col items-center gap-2">
+                <div class="avatar-wrapper" id="btnAvatarUpload">
+                    <img id="modalUserAvatar" src="" alt="User Photo" class="avatar-large-img hidden">
+                    <div id="modalAvatarFallback" class="w-20 h-20 rounded-full bg-orange-500 text-white flex items-center justify-center text-3xl font-bold shadow-inner">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="avatar-edit-badge" title="Change Photo">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <input type="file" id="avatarFileInput" accept="image/*" class="hidden">
+                <span class="text-xs text-slate-400">Click photo or camera icon to update</span>
+            </div>
+
+            <!-- Profile Form Fields -->
+            <form id="personalInfoForm" class="space-y-4">
+                
+                <!-- Username -->
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="editUsernameInput" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Username</label>
+                        <button type="button" id="btnToggleEditUsername" class="text-xs font-bold text-orange-500 hover:text-orange-600">Edit</button>
+                    </div>
+                    <input type="text" id="editUsernameInput" class="profile-input-field" disabled required>
+                </div>
+
+                <!-- Mobile / Phone Number Field -->
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="editPhoneInput" class="text-xs font-bold text-slate-600 uppercase tracking-wider">Mobile Number</label>
+                        <button type="button" id="btnToggleEditPhone" class="text-xs font-bold text-orange-500 hover:text-orange-600">Edit</button>
+                    </div>
+                    <input type="tel" id="editPhoneInput" class="profile-input-field" placeholder="Add mobile number" disabled>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="editEmailInput" class="profile-input-field" disabled>
+                </div>
+
+                <!-- Member Since -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Member Since</label>
+                    <input type="text" id="joinDateInput" class="profile-input-field" disabled>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="pt-2 space-y-2">
+                    <button type="submit" id="btnSaveProfile" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl text-sm transition shadow-sm hidden">
+                        Save Changes
+                    </button>
+
+                    <button type="button" id="btnResetPassword" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-key text-xs text-slate-500"></i>
+                        <span>Reset Password</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- PERMANENT NAVBAR MOUNT -->
+    <div id="nav-placeholder"></div>
+
+    <script src="navbar.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

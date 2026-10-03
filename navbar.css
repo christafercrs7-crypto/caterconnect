@@ -1,0 +1,159 @@
+/* Body padding to prevent content overlap with fixed navbar */
+body {
+    padding-bottom: 90px;
+    background-color: #f8f9fa; /* CaterConnect soft light background */
+}
+
+/* Fixed Bottom Container with Light Theme */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px; /* Mobile viewport standard */
+    height: 72px;
+    background-color: #ffffff;
+    border-top: 1px solid #eef0f4;
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+}
+
+.nav-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    z-index: 5;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+    flex: 1;
+    height: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #94a3b8; /* Muted slate gray for inactive items */
+    transition: color 0.3s ease;
+}
+
+/* Icon Sizing & Animations */
+.nav-item svg {
+    width: 25px;
+    height: 25px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+}
+
+/* Hide default icon when active (moves into the bead) */
+.nav-item.active svg {
+    transform: translateY(-38px);
+    opacity: 0;
+}
+
+/* CaterConnect Primary Orange Active Text Label */
+.nav-item .label {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #f15a24; /* CaterConnect Warm Orange */
+    letter-spacing: 0.3px;
+    animation: fadeInLabel 0.35s forwards;
+}
+
+/* Dynamic Moving Bead Tracker Wrapper */
+.bead-tracker {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    width: 90px;
+    height: 96px;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
+}
+
+/* CaterConnect Vibrant Floating Bead */
+.bead {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #ff6b35 0%, #f15a24 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(241, 90, 36, 0.38), 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    z-index: 3;
+}
+
+.bead svg {
+    width: 25px;
+    height: 25px;
+    color: #ffffff;
+    transition: opacity 0.15s ease;
+}
+
+/* Smooth Curved Reverse Cutouts Matching White Background */
+.cutout-left, .cutout-right {
+    position: absolute;
+    top: 24px;
+    width: 22px;
+    height: 22px;
+    background-color: transparent;
+}
+
+.cutout-left {
+    left: -8px;
+    border-bottom-right-radius: 18px;
+    box-shadow: 8px 8px 0 8px #ffffff;
+}
+
+.cutout-right {
+    right: -8px;
+    border-bottom-left-radius: 18px;
+    box-shadow: -8px 8px 0 8px #ffffff;
+}
+
+/* View Section Visibility Handling */
+.app-view {
+    display: none;
+}
+
+.app-view.active-view {
+    display: block;
+}
+
+.blank-page-container {
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #64748b;
+}
+
+@keyframes fadeInLabel {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
